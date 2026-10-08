@@ -1,0 +1,77 @@
+[
+  {
+    "id": "environnement",
+    "title": "Environnement",
+    "icon": "leaf",
+    "color": "green",
+    "summary": "Études environnementales, évaluations d'impact, diagnostics et suivi environnemental.",
+    "description": "APECDI intervient dans la réalisation d'études environnementales et sociales (EIES), de diagnostics environnementaux, du suivi et de l'évaluation des impacts de projets sur l'environnement. Nos équipes assurent la collecte rigoureuse de données environnementales de terrain.",
+    "activities": [
+      "Études d'Impact Environnemental et Social (EIES)",
+      "Diagnostics environnementaux",
+      "Suivi environnemental de projets",
+      "Collecte et traitement de données environnementales",
+      "Études environnementales et sociales d'infrastructures"
+    ]
+  },
+  {
+    "id": "foresterie",
+    "title": "Foresterie & Ressources naturelles",
+    "icon": "tree",
+    "color": "dark-green",
+    "summary": "Aménagement forestier, reboisement, restauration des terres et gestion participative.",
+    "description": "Notre pôle foresterie accompagne la planification et la mise en œuvre d'opérations d'aménagement forestier, de reboisement, de restauration des terres dégradées et de gestion participative des ressources naturelles, y compris les forêts communautaires et la biodiversité.",
+    "activities": [
+      "Élaboration et actualisation de plans d'aménagement forestier",
+      "Opérations de reboisement et restauration de terres",
+      "Gestion participative des ressources naturelles",
+      "Appui aux forêts communautaires",
+      "Études sur la biodiversité"
+    ]
+  },
+  {
+    "id": "agriculture",
+    "title": "Agriculture & Développement rural",
+    "icon": "sprout",
+    "color": "amber",
+    "summary": "Agroforesterie, accompagnement agricole, structuration des organisations paysannes.",
+    "description": "APECDI accompagne le développement agricole et rural à travers des projets d'agroforesterie, le suivi-accompagnement de producteurs, et la structuration d'organisations professionnelles agricoles (OPA) et de coopératives.",
+    "activities": [
+      "Projets d'agroforesterie",
+      "Accompagnement de producteurs agricoles",
+      "Structuration d'organisations professionnelles agricoles (OPA)",
+      "Appui aux coopératives agricoles",
+      "Développement des filières agricoles"
+    ]
+  },
+  {
+    "id": "etudes-donnees",
+    "title": "Études, Données & Terrain",
+    "icon": "clipboard",
+    "color": "blue",
+    "summary": "Enquêtes, collecte de données, géoréférencement et études socio-économiques.",
+    "description": "Notre équipe terrain réalise des enquêtes et collectes de données de terrain, des vérifications et validations de données, des opérations de géoréférencement, ainsi que des études socio-économiques au service des projets de développement.",
+    "activities": [
+      "Enquêtes et collectes de données de terrain",
+      "Vérification et validation de données",
+      "Géoréférencement",
+      "Études socio-économiques",
+      "Traitement et analyse de données"
+    ]
+  },
+  {
+    "id": "developpement-communautaire",
+    "title": "Développement communautaire",
+    "icon": "users",
+    "color": "purple",
+    "summary": "Accompagnement, renforcement des capacités, formation et inclusion.",
+    "description": "APECDI accompagne les communautés et organisations dans leur développement à travers des actions de renforcement des capacités, de formation, de mobilisation communautaire et de promotion de l'inclusion.",
+    "activities": [
+      "Accompagnement de communautés",
+      "Renforcement des capacités organisationnelles",
+      "Formation et sensibilisation",
+      "Mobilisation communautaire",
+      "Promotion de l'inclusion"
+    ]
+  }
+]

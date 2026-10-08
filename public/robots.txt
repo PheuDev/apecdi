@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Ne pas indexer l'interface d'administration
+Disallow: /admin/
+
+Sitemap: https://apecdi.com/sitemap.xml

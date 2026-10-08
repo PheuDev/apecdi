@@ -1,0 +1,51 @@
+{
+  "name": "APECDI",
+  "fullName": "Agence Privée d'Expertise et de Conseil pour un Développement Inclusif",
+  "tagline": "Expertise, environnement et développement au service des territoires et des communautés.",
+  "tagline_note": "Accroche éditoriale provisoire — pas un slogan officiel",
+  "founded": "2013-03-25",
+  "country": "Bénin",
+  "description": "APECDI est une agence privée béninoise d'expertise et de conseil créée en 2013, intervenant dans les domaines de l'environnement, de la foresterie, de l'agriculture, des études de terrain et du développement communautaire.",
+  "mission": "Apporter une expertise technique de qualité et un conseil stratégique au service du développement inclusif, durable et équitable des territoires et des communautés au Bénin et en Afrique de l'Ouest.",
+  "vision": "Être une référence reconnue en matière d'expertise environnementale, forestière et de développement rural au Bénin.",
+  "values": [
+    "Professionnalisme",
+    "Intégrité",
+    "Social"
+  ],
+  "contact": {
+    "email": { "status": "to_validate" },
+    "phone": { "status": "to_validate" },
+    "whatsapp": { "status": "to_validate" },
+    "address": { "status": "to_validate" },
+    "city": "Cotonou",
+    "country": "Bénin",
+    "hours": { "status": "to_validate" }
+  },
+  "social": {
+    "facebook": { "status": "to_validate" },
+    "linkedin": { "status": "to_validate" },
+    "twitter": { "status": "to_validate" }
+  },
+  "hero": {
+    "image": "/uploads/hero.webp",
+    "cta_primary": { "label": "Découvrir nos expertises", "href": "/expertises" },
+    "cta_secondary": { "label": "Voir nos réalisations", "href": "/realisations" },
+    "cta_tertiary": { "label": "Nous contacter", "href": "/contact" }
+  },
+  "stats": [
+    { "label": "Année de création", "value": "2013", "icon": "calendar" },
+    { "label": "Domaines d'expertise", "value": "5", "icon": "layers" },
+    { "label": "Hectares reboisés", "value": "225+", "icon": "tree" },
+    { "label": "Infrastructures étudiées", "value": "253+", "icon": "building" }
+  ],
+  "footer": {
+    "tagline": "Expertise, environnement et développement inclusif au Bénin.",
+    "copyright": "© 2026 APECDI — Agence Privée d'Expertise et de Conseil pour un Développement Inclusif. Tous droits réservés."
+  },
+  "seo": {
+    "title": "APECDI — Expertise Environnementale et Développement Inclusif au Bénin",
+    "description": "APECDI est une agence béninoise d'expertise en environnement, foresterie, agriculture et développement rural. Créée en 2013, elle accompagne les projets de développement inclusif au Bénin.",
+    "keywords": "APECDI, Bénin, Cotonou, environnement, foresterie, agriculture, développement rural, développement inclusif, étude impact environnemental"
+  }
+}

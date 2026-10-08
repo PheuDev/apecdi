@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: apecdi-site
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()
+      # Cache long pour les assets versionnés
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # Pas de cache pour index.html
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache, no-store, must-revalidate
+      # Cache court pour les JSON de contenu
+      - path: /content/*
+        name: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=60
+    routes:
+      # SPA fallback — toutes les routes renvoient index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html

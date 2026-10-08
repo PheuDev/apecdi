@@ -1,0 +1,10 @@
+[
+  {
+    "id": "direction",
+    "name": { "status": "to_validate" },
+    "role": "Direction Générale",
+    "bio": { "status": "to_validate" },
+    "photo": null,
+    "expertise": []
+  }
+]
