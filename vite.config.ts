@@ -9,9 +9,6 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
-  // Le dossier public Vite est servi tel quel à la racine.
-  // On utilise publicDir: 'public' (défaut) et on copie /content
-  // via un plugin simple de copie.
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -26,9 +23,12 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    // En dev, on sert aussi /content depuis la racine du projet
-    fs: {
-      allow: ['.'],
-    },
+    // SPA fallback : renvoie index.html pour toutes les routes inconnues
+    historyApiFallback: true,
+  },
+  preview: {
+    port: 4173,
+    // Même fallback pour `npm run preview`
+    historyApiFallback: true,
   },
 })

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getSiteConfig } from '../services/content'
 import { savePAT, getPAT, saveRepo, getRepo, testConnection, clearPAT } from '../services/github-sync'
-import { changePassword } from '../services/auth'
+import { changePassword, checkDevCode, isDevUnlocked, lockSettings, changeDevCode } from '../services/auth'
 import { pushFile } from '../services/github-sync'
 import Icon from '../components/Icon'
 import type { SiteConfig } from '../types'
@@ -9,7 +9,111 @@ import { isToValidate } from '../types'
 
 type TabId = 'general' | 'contact' | 'github' | 'security'
 
+// ─── Écran de vérification du code développeur ────────────────────────────────
+
+function DevGate({ onUnlock }: { onUnlock: () => void }) {
+  const [code, setCode] = useState('')
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [show, setShow] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(false)
+    const ok = await checkDevCode(code)
+    if (ok) {
+      onUnlock()
+    } else {
+      setError(true)
+      setCode('')
+    }
+    setLoading(false)
+  }
+
+  return (
+    <div className="dev-gate">
+      <div className="dev-gate-box">
+        <div className="dev-gate-icon"><Icon name="lock" size={28} /></div>
+        <h2>Accès restreint</h2>
+        <p>Les paramètres sont protégés par un code développeur.</p>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label" htmlFor="dev-code">Code d'accès</label>
+            <div style={{ position: 'relative' }}>
+              <input
+                id="dev-code"
+                type={show ? 'text' : 'password'}
+                className="form-input"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                autoFocus
+                autoComplete="off"
+                disabled={loading}
+              />
+              <button
+                type="button"
+                style={{ position: 'absolute', right: 'var(--space-3)', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+                onClick={() => setShow(!show)}
+                aria-label={show ? 'Masquer' : 'Afficher'}
+              >
+                <Icon name="eye" size={16} />
+              </button>
+            </div>
+          </div>
+          {error && (
+            <div className="alert alert-error" style={{ marginBottom: 'var(--space-4)' }}>
+              <Icon name="x" size={14} /><span>Code incorrect.</span>
+            </div>
+          )}
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading || !code.trim()}>
+            {loading ? <span className="spinner" style={{ width: 18, height: 18 }} /> : 'Accéder aux paramètres'}
+          </button>
+        </form>
+      </div>
+      <style>{`
+        .dev-gate {
+          display: flex; align-items: center; justify-content: center;
+          min-height: 60vh; padding: var(--space-8);
+        }
+        .dev-gate-box {
+          background: var(--surface); border: 1px solid var(--border);
+          border-radius: var(--radius-2xl); padding: var(--space-10);
+          width: 100%; max-width: 360px; text-align: center;
+          box-shadow: var(--shadow-lg);
+        }
+        .dev-gate-icon {
+          width: 64px; height: 64px; border-radius: 50%;
+          background: var(--primary-subtle); color: var(--primary);
+          display: flex; align-items: center; justify-content: center;
+          margin: 0 auto var(--space-5);
+        }
+        .dev-gate-box h2 { font-size: var(--text-xl); margin-bottom: var(--space-2); }
+        .dev-gate-box p { color: var(--text-muted); font-size: var(--text-sm); margin-bottom: var(--space-6); line-height: var(--leading-relaxed); }
+        .dev-gate-box .form-group { text-align: left; }
+      `}</style>
+    </div>
+  )
+}
+
+// ─── Composant principal ──────────────────────────────────────────────────────
+
 export default function SiteSettings() {
+  const [unlocked, setUnlocked] = useState(false)
+
+  // Vérifier si déjà déverrouillé dans cette session
+  useEffect(() => { setUnlocked(isDevUnlocked()) }, [])
+
+  if (!unlocked) {
+    return <DevGate onUnlock={() => setUnlocked(true)} />
+  }
+
+  return <SettingsPanel onLock={() => { lockSettings(); setUnlocked(false) }} />
+}
+
+// ─── Panneau paramètres (accessible après code dev) ───────────────────────────
+
+function SettingsPanel({ onLock }: { onLock: () => void }) {
   const [tab, setTab] = useState<TabId>('general')
   const [site, setSite] = useState<SiteConfig | null>(null)
   const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
@@ -24,6 +128,9 @@ export default function SiteSettings() {
   // Password
   const [newPwd, setNewPwd] = useState('')
   const [newPwd2, setNewPwd2] = useState('')
+  // Code dev
+  const [newDevCode, setNewDevCode] = useState('')
+  const [newDevCode2, setNewDevCode2] = useState('')
 
   useEffect(() => {
     getSiteConfig().then(setSite)
@@ -112,6 +219,21 @@ export default function SiteSettings() {
     setMsg({ type: 'success', text: 'Mot de passe mis à jour. Notez-le précieusement.' })
   }
 
+  const handleChangeDevCode = async () => {
+    if (!newDevCode || newDevCode !== newDevCode2) {
+      setMsg({ type: 'error', text: 'Les codes ne correspondent pas.' })
+      return
+    }
+    if (newDevCode.length < 8) {
+      setMsg({ type: 'error', text: 'Le code doit faire au moins 8 caractères.' })
+      return
+    }
+    await changeDevCode(newDevCode)
+    setNewDevCode('')
+    setNewDevCode2('')
+    setMsg({ type: 'success', text: 'Code développeur mis à jour.' })
+  }
+
   const modeBActive = !!getPAT() && !!getRepo()
   const contactStr = (v: unknown) => isToValidate(v) ? '' : String(v)
 
@@ -128,6 +250,10 @@ export default function SiteSettings() {
     <div className="admin-page">
       <div className="admin-page-header">
         <h1>Paramètres du site</h1>
+        <button className="btn btn-ghost btn-sm" onClick={onLock} title="Verrouiller les paramètres">
+          <Icon name="lock" size={16} />
+          Verrouiller
+        </button>
       </div>
 
       {msg && (
@@ -351,6 +477,35 @@ export default function SiteSettings() {
           <p className="form-hint" style={{ marginTop: 'var(--space-4)' }}>
             Le nouveau hash est stocké dans localStorage de ce navigateur. Le mot de passe par défaut est <code>apecdi2024</code> — changez-le avant utilisation.
           </p>
+
+          <hr className="divider" />
+
+          <h3 style={{ marginBottom: 'var(--space-2)' }}>Code développeur (accès Paramètres)</h3>
+          <p className="form-hint" style={{ marginBottom: 'var(--space-5)' }}>
+            Ce code est distinct du mot de passe admin. Il protège l'accès à cette page de paramètres.
+            Seul le développeur doit le connaître. Code par défaut : <code>devapecdi2024</code>.
+          </p>
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="new-dev-code">Nouveau code développeur</label>
+            <input id="new-dev-code" type="password" className="form-input" value={newDevCode} onChange={(e) => setNewDevCode(e.target.value)} autoComplete="new-password" minLength={8} />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="new-dev-code2">Confirmer le code</label>
+            <input id="new-dev-code2" type="password" className="form-input" value={newDevCode2} onChange={(e) => setNewDevCode2(e.target.value)} autoComplete="new-password" minLength={8} />
+            {newDevCode && newDevCode2 && newDevCode !== newDevCode2 && (
+              <span className="form-error">Les codes ne correspondent pas.</span>
+            )}
+          </div>
+
+          <button
+            className="btn btn-primary"
+            onClick={handleChangeDevCode}
+            disabled={!newDevCode || !newDevCode2 || newDevCode !== newDevCode2}
+          >
+            <Icon name="lock" size={16} /> Changer le code développeur
+          </button>
         </div>
       )}
 

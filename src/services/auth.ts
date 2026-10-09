@@ -1,17 +1,21 @@
 /**
  * auth.ts — Gestion de session admin
  *
- * Sécurité intentionnellement limitée : cette authentification protège
- * l'interface contre les visiteurs occasionnels. Elle n'est pas une sécurité
- * serveur. Voir README pour les détails.
+ * Deux niveaux d'accès :
+ * - Niveau 1 (mot de passe admin) : accès à la gestion du contenu
+ * - Niveau 2 (code développeur)   : accès supplémentaire aux Paramètres
+ *
+ * Sécurité intentionnellement limitée : protège contre les visiteurs occasionnels.
+ * Voir README pour les détails.
  */
 
-import { sha256, DEFAULT_PASSWORD_HASH } from './crypto'
+import { sha256, DEFAULT_PASSWORD_HASH, DEFAULT_DEV_CODE_HASH } from './crypto'
 
-const SESSION_KEY = 'apecdi_admin_session'
-const SESSION_DURATION = 30 * 60 * 1000 // 30 minutes
-const MAX_ATTEMPTS = 5
-const LOCKOUT_DURATION = 60 * 1000 // 60 secondes
+const SESSION_KEY       = 'apecdi_admin_session'
+const DEV_SESSION_KEY   = 'apecdi_dev_session'
+const SESSION_DURATION  = 30 * 60 * 1000  // 30 min
+const MAX_ATTEMPTS      = 5
+const LOCKOUT_DURATION  = 60 * 1000       // 60 s
 
 interface AdminSession {
   timestamp: number
@@ -128,4 +132,37 @@ export async function checkPassword(password: string): Promise<boolean> {
 export async function changePassword(newPassword: string): Promise<void> {
   const hash = await sha256(newPassword)
   localStorage.setItem('apecdi_pwd_hash', hash)
+}
+
+// ─── Niveau 2 : accès Paramètres (code développeur) ───────────────────────────
+
+/**
+ * Vérifie le code développeur et ouvre une session de niveau 2.
+ * La session expire en même temps que la session admin principale.
+ */
+export async function checkDevCode(code: string): Promise<boolean> {
+  const storedHash = localStorage.getItem('apecdi_dev_hash') || DEFAULT_DEV_CODE_HASH
+  const inputHash  = await sha256(code)
+  if (inputHash === storedHash) {
+    sessionStorage.setItem(DEV_SESSION_KEY, '1')
+    return true
+  }
+  return false
+}
+
+/** Indique si le code dev a été saisi dans cette session. */
+export function isDevUnlocked(): boolean {
+  // La session dev ne dure que le temps de la session admin
+  return sessionStorage.getItem(DEV_SESSION_KEY) === '1' && isLoggedIn()
+}
+
+/** Verrouille de nouveau les Paramètres sans déconnecter l'admin. */
+export function lockSettings(): void {
+  sessionStorage.removeItem(DEV_SESSION_KEY)
+}
+
+/** Permet au développeur de changer le code dev (stocké en localStorage). */
+export async function changeDevCode(newCode: string): Promise<void> {
+  const hash = await sha256(newCode)
+  localStorage.setItem('apecdi_dev_hash', hash)
 }
