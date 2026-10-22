@@ -28,7 +28,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Images ── */
+/* ── Titres : Outfit ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  color: var(--text);
+} */
 img, video {
   max-width: 100%;
   height: auto;
@@ -72,11 +78,11 @@ ul, ol {
   list-style: none;
 }
 
-/* ── Headings ── */
-h1, h2, h3, h4, h5, h6 {
-  line-height: var(--leading-tight);
-  font-weight: var(--font-bold);
-  color: var(--text);
+/* ── Images ── */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* ── Typographie de contenu (articles) ── */
@@ -137,11 +143,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-title {
+  font-family: var(--font-display);
   font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
+  font-weight: var(--font-extrabold);
   color: var(--text);
   margin-bottom: var(--space-4);
   line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
 }
 
 @media (min-width: 768px) {

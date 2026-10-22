@@ -24,8 +24,8 @@ export default function Footer({ site }: FooterProps) {
         <div className="footer-brand">
           <Link to="/" className="footer-logo" aria-label="APECDI — Retour à l'accueil">
             <span className="footer-logo-text">APECDI</span>
+            <span className="footer-logo-sub">{site.fullName}</span>
           </Link>
-          <p className="footer-fullname">{site.fullName}</p>
           <p className="footer-tagline">{site.footer.tagline}</p>
           <div className="footer-values">
             {site.values.map((v) => (
@@ -163,23 +163,24 @@ export default function Footer({ site }: FooterProps) {
         }
 
         /* ── Brand ── */
-        .footer-logo { text-decoration: none; }
+        .footer-logo { text-decoration: none; display: block; margin-bottom: var(--space-4); }
         .footer-logo-text {
+          font-family: var(--font-display);
           font-size: 1.8rem;
           font-weight: 800;
           color: white;
-          letter-spacing: 0.04em;
-          display: block;
-          margin-bottom: var(--space-2);
-        }
-
-        .footer-fullname {
-          font-size: var(--text-xs);
-          color: rgba(255,255,255,0.5);
-          margin-bottom: var(--space-4);
-          line-height: var(--leading-snug);
-          text-transform: uppercase;
           letter-spacing: 0.06em;
+          display: block;
+          line-height: 1;
+        }
+        .footer-logo-sub {
+          display: block;
+          font-size: 0.65rem;
+          color: rgba(255,255,255,0.4);
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          margin-top: var(--space-1);
+          line-height: var(--leading-snug);
         }
 
         .footer-tagline {

@@ -338,39 +338,38 @@
 /* ─── Page hero (inner pages) ─────────────────────────────────────────────────── */
 
 .page-hero {
-  background: linear-gradient(135deg, var(--surface-dark) 0%, #2A0A0A 100%);
+  background: linear-gradient(135deg, #1A0808 0%, #2A1010 60%, #1A1A1A 100%);
   color: white;
-  padding: calc(var(--nav-height) + var(--space-16)) 0 var(--space-16);
+  padding: calc(var(--header-height) + var(--space-12)) 0 var(--space-14);
   position: relative;
   overflow: hidden;
+  border-bottom: 3px solid var(--primary);
 }
 
 .page-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
-.page-hero-content {
-  position: relative;
-  z-index: 1;
-}
+.page-hero-content { position: relative; z-index: 1; }
 
 .page-hero h1 {
-  font-size: var(--text-4xl);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: var(--font-extrabold);
   color: white;
-  margin-bottom: var(--space-4);
-}
-
-@media (min-width: 768px) {
-  .page-hero h1 { font-size: var(--text-5xl); }
+  margin-bottom: var(--space-3);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
 }
 
 .page-hero p {
-  font-size: var(--text-lg);
-  color: rgba(255,255,255,0.75);
-  max-width: 600px;
+  font-size: var(--text-base);
+  color: rgba(255,255,255,0.65);
+  max-width: 560px;
+  line-height: var(--leading-relaxed);
 }
 
 /* ─── Divider ─────────────────────────────────────────────────────────────────── */
